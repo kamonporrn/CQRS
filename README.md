@@ -17,14 +17,20 @@ The CQRS framework can be described as follows:
 - Scalability and Performance Optimization: Framework system requirements or technology management system
 
 Example normal model system
+![UML Logo](Screenshot1.png)
 
 Example using CQRS
+![UML Logo](Screenshot2.png)
+
 
 The command-side request lifecycle comes from the client sending a command through the API, and that command is processed by a command handler. This command handler then calls domain objects, such as aggregate roots in the domain layer, to process business logic. Before saving these domain objects into the database through the repository, there may be events that occur from various commands sent to the event handler that writes the changed data to the data storage on the other side for use. query only, which here is the case where we use asynchronous messaging to sync data on both sides in the case of using different data storage types. On the query side, there will be a query handler waiting to receive the query request from the API, then it will bypass the logic in The domain layer will call data access objects such as ORMs to query data from the read database and send it out to the client immediately.
 
 Framework can do :
 in actual use We will notice that since we have separate models for read and write, we can separate the data on both sides independently. This allows us to optimize scalability such as asymmetric read/write ratio, optimizing queries with materialized views to reduce aggregated data across tables or collections, as well as various use cases that may require specialized data storage, such as search that may be required Elasticsearch or use for various analytics tasks
 A good starting point is that we can use a read replica with a read model.
+
+![UML Logo](Screenshot3.png)
+
 
 Designing a system that uses a Data Access Model that separates read and write operations is an important point that allows it to support Advanced Use Cases, such as using Storage Technology that differs between read and write operations. such as MySQL and Elasticsearch And to improve the efficiency of queries on the read side (read), in this case there must be data sync between Write and Read Storage by using the Publish Event mechanism to come out every time the data is updated so that the Read side These events can be used to update data in themselves by using Messaging Tools such as RabbitMQ or Kafka as Event Bus to transmit these events. Therefore, the architecture of the system will look like this:
 - Separate Read and Write Data Access Model: Separating the Data Access Model between read and write allows different storage technologies to be used in each process. without clause Limited or difficult to manage data
