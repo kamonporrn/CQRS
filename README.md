@@ -16,20 +16,12 @@ The CQRS framework can be described as follows:
 - Infrastructure Support: The CQRS Framework requires tools or extensions to control the communication between different components. And the results are also sent to the interface and security and performance management of the system.
 - Scalability and Performance Optimization: Framework system requirements or technology management system
 
-Example normal model system
-![UML Logo](Screenshot1.png)
-
-Example using CQRS
-![UML Logo](Screenshot2.png)
-
 
 The command-side request lifecycle comes from the client sending a command through the API, and that command is processed by a command handler. This command handler then calls domain objects, such as aggregate roots in the domain layer, to process business logic. Before saving these domain objects into the database through the repository, there may be events that occur from various commands sent to the event handler that writes the changed data to the data storage on the other side for use. query only, which here is the case where we use asynchronous messaging to sync data on both sides in the case of using different data storage types. On the query side, there will be a query handler waiting to receive the query request from the API, then it will bypass the logic in The domain layer will call data access objects such as ORMs to query data from the read database and send it out to the client immediately.
 
 Framework can do :
 in actual use We will notice that since we have separate models for read and write, we can separate the data on both sides independently. This allows us to optimize scalability such as asymmetric read/write ratio, optimizing queries with materialized views to reduce aggregated data across tables or collections, as well as various use cases that may require specialized data storage, such as search that may be required Elasticsearch or use for various analytics tasks
 A good starting point is that we can use a read replica with a read model.
-
-![UML Logo](Screenshot3.png)
 
 
 Designing a system that uses a Data Access Model that separates read and write operations is an important point that allows it to support Advanced Use Cases, such as using Storage Technology that differs between read and write operations. such as MySQL and Elasticsearch And to improve the efficiency of queries on the read side (read), in this case there must be data sync between Write and Read Storage by using the Publish Event mechanism to come out every time the data is updated so that the Read side These events can be used to update data in themselves by using Messaging Tools such as RabbitMQ or Kafka as Event Bus to transmit these events. Therefore, the architecture of the system will look like this:
@@ -48,14 +40,14 @@ From the point of view of the development itself, bringing in CQRS adds another 
 
 ## Consequences
 Pros 
-- Efficient data analysis: Systems with SQRS data management often help in fast and efficient data analysis, such as big data processing. Creating a report or predicting various trends
-- Easy data access: SQRS may help to store data systematically and provide easy access for users, for example through applications or web interfaces.
-- Save time and resources: Using SQRS can help reduce data processing time and make the work process more efficient. It reduces manual work and reduces possible errors.
+- Efficient data analysis: Systems with CQRS data management often help in fast and efficient data analysis, such as big data processing. Creating a report or predicting various trends
+- Easy data access: CQRS may help to store data systematically and provide easy access for users, for example through applications or web interfaces.
+- Save time and resources: Using CQRS can help reduce data processing time and make the work process more efficient. It reduces manual work and reduces possible errors.
   
 Cons
-- Complexity: Building and maintaining an SQRS system can be difficult. This is due to the complexity of the structure and settings that must be adjusted according to the needs of the business.
-- Cost: SQRS system development and maintenance can require a high investment budget. To make the system work efficiently and effectively
-- Improvements and Upgrades: Improving and upgrading SQRS systems can be complex and time-consuming. This may cause businesses to face inconvenience during the time the system is being upgraded.
+- Complexity: Building and maintaining a CQRS system can be difficult. This is due to the complexity of the structure and settings that must be adjusted according to the needs of the business.
+- Cost: CQRS system development and maintenance can require a high investment budget. To make the system work efficiently and effectively
+- Improvements and Upgrades: Improving and upgrading CQRS systems can be complex and time-consuming. This may cause businesses to face inconvenience during the time the system is being upgraded.
 
 ## Sample code
 
